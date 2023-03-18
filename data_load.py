@@ -14,11 +14,8 @@ class Dataset(Dataset):
         self.data_dir_input = self.data_dir + '/input'
         self.data_dir_label = self.data_dir + '/label'
 
-        list_data_input = os.listdir(self.data_dir_input)
-        list_data_label = os.listdir(self.data_dir_label)
-
-        self.list_data_input = list_data_input
-        self.list_data_label = list_data_label
+        self.list_data_input = os.listdir(self.data_dir_input)
+        self.list_data_label = os.listdir(self.data_dir_label)
 
     def len(self):
         return len(self.data_label)
