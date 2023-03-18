@@ -28,7 +28,7 @@ dir_save_test_label = os.path.join(dir_data, 'test/label')
 
 
 # 2. frame random shuffle
-id_frame = np.arrange(nframe)
+id_frame = np.arange(nframe)
 np.random.shuffle(id_frame)
 
 

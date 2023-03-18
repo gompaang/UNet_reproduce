@@ -72,7 +72,7 @@ def train(config):
 
     # 3. network setting
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    net = UNet().to(device)
+    net = UNet(in_channels=1, out_channels=1).to(device)
     criterion = nn.BCEWithLogitsLoss().to(device)
     optim = torch.optim.Adam(net.parameters(), lr=1e-3)
 
@@ -88,9 +88,10 @@ def train(config):
         loss_arr = []
 
         # train
-        for batch, (images, labels) in enumerate(loader_train, 1):
-            labels = labels*0.5 + 0.5  # label denormalization
-            images, labels = images.to(device), labels.to(device)
+        for batch, data in enumerate(loader_train, 1):
+            data['label'] = data['label']*0.5 + 0.5  # label denormalization
+            images, labels = data['input'], data['label']
+            images, labels = data['input'].to(device), data['label'].to(device)
 
             output = net(images)
 
@@ -115,8 +116,9 @@ def train(config):
             loss_arr = []
 
             for batch, (images, labels) in enumerate(loader_val, 1):
-                labels = labels * 0.5 + 0.5  # label denormalization
-                images, labels = images.to(device), labels.to(device)
+                data['label'] = data['label'] * 0.5 + 0.5  # label denormalization
+                images, labels = data['input'], data['label']
+                images, labels = data['input'].to(device), data['label'].to(device)
 
                 output = net(images)
 
@@ -141,7 +143,7 @@ def train(config):
 
     # 6. print total training time & best val loss
     total_time = time.time() - start_time
-    print('Training complete in {:.0f}m {:0.f}s'.format(total_time // 60, total_time % 60))
+    print('Training complete in {:.0f}m {:.0f}s'.format(total_time // 60, total_time % 60))
     print('Best val loss: {:4f}'.format(best_loss))
 
 

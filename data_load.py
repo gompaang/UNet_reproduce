@@ -17,8 +17,8 @@ class Dataset(Dataset):
         self.list_data_input = os.listdir(self.data_dir_input)
         self.list_data_label = os.listdir(self.data_dir_label)
 
-    def len(self):
-        return len(self.data_label)
+    def __len__(self):
+        return len(self.list_data_label)
 
     def __getitem__(self, index):
         input = np.load(os.path.join(self.data_dir_input, self.list_data_input[index]))
